@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Fastsdk Plug-in
+Bundle-SymbolicName: org.fast.fastsdk; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.fast.fastsdk.core.FastsdkPlugin
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.views,
+ org.eclipse.gef,
+ org.eclipse.ui.ide,
+ org.eclipse.core.resources,
+ org.fast.fastsdk.lib
+Eclipse-AutoStart: true

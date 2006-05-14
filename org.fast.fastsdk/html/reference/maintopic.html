@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>FAST Syntax</title>
+</head>
+
+<body>
+<h1>FAST Syntax</h1>
+Here is a BNF-like grammar for FAST input scripts:
+<br />
+program : statements
+<br />
+;
+<br />
+statements : statement | statements
+<br />
+;
+<br />
+statement : node "=&gt;" node
+<br />
+;
+<br />
+node: "entry" | "exit" | predicate_node | function_node
+<br />
+;
+<br />
+predicate_node : "&lt;" node_name ">"
+<br />
+;
+<br />
+node_name : node_label | node_id ":" node_label
+<br />
+;
+<br />
+node_label : /.+/ ; node_id : /\d+/
+<br />
+;
+<br />
+function_node : "[" node_name "]"
+<br />
+;
+<br />
+Note that every /.../ in the grammar is a Perl regexp. To be honest, the
+definition of node_label is a bit fuzzy. The following string are all
+valid node_labels:
+<br />
+"a &gt; b"
+<br />
+"53 &lt; a+5"
+<br />
+"aaaa bbbb &lt;&gt; dsd"
+<br />
+So the grammar given above can not be implemented by a shift/reduce
+parser.
+<br />
+<br />
+It should be mentioned that whitespaces are not taken into account in
+the preceding grammar. The FAST input language is based on lines. Every
+statement should be placed in a single line (empty lines are okay).
+Whitespaces are okay between terminals and nonterminals. They'll be
+ignored silently outside node_names, but will be preserved within
+node_names.
+<br />
+Last but not least, the FAST input language is case-sensitive.
+</body>
+</html>

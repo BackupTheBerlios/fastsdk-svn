@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Reference" link_to="toc.xml#reference">
+	<topic label="FAST Language Guide"
+		href="html/reference/maintopic.html" />
+	<topic label="FAST SDK API" href="doc/api/index.html" />
+</toc>

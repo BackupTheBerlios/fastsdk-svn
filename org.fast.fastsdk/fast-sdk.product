@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.1"?>
+
+<product name="FAST SDK" id="org.fast.fastsdk.fast_sdk" application="org.fast.fastsdk.fastsdk" useFeatures="false">
+
+   <configIni use="default"/>
+
+   <launcherArgs>
+   </launcherArgs>
+
+   <windowImages small="/org.fast.fastsdk/icons/logo.gif" large="/org.fast.fastsdk/icons/logo32.gif"/>
+
+   <splash location="org.fast.fastsdk"/>
+
+   <launcher name="fastsdk">
+      <solaris/>
+      <win useIco="true">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <plugins>
+      <plugin id="org.apache.ant"/>
+      <plugin id="org.apache.batik"/>
+      <plugin id="org.apache.lucene"/>
+      <plugin id="org.aspectj.runtime"/>
+      <plugin id="org.eclipse.ant.core"/>
+      <plugin id="org.eclipse.core.commands"/>
+      <plugin id="org.eclipse.core.expressions"/>
+      <plugin id="org.eclipse.core.resources"/>
+      <plugin id="org.eclipse.core.resources.compatibility"/>
+      <plugin id="org.eclipse.core.resources.win32"/>
+      <plugin id="org.eclipse.core.runtime"/>
+      <plugin id="org.eclipse.core.runtime.compatibility"/>
+      <plugin id="org.eclipse.core.variables"/>
+      <plugin id="org.eclipse.draw2d"/>
+      <plugin id="org.eclipse.gef"/>
+      <plugin id="org.eclipse.help"/>
+      <plugin id="org.eclipse.help.appserver"/>
+      <plugin id="org.eclipse.help.base"/>
+      <plugin id="org.eclipse.help.ui"/>
+      <plugin id="org.eclipse.help.webapp"/>
+      <plugin id="org.eclipse.jface"/>
+      <plugin id="org.eclipse.osgi"/>
+      <plugin id="org.eclipse.swt"/>
+      <plugin id="org.eclipse.swt.win32.win32.x86"/>
+      <plugin id="org.eclipse.tomcat"/>
+      <plugin id="org.eclipse.ui"/>
+      <plugin id="org.eclipse.ui.forms"/>
+      <plugin id="org.eclipse.ui.ide"/>
+      <plugin id="org.eclipse.ui.views"/>
+      <plugin id="org.eclipse.ui.win32"/>
+      <plugin id="org.eclipse.ui.workbench"/>
+      <plugin id="org.eclipse.update.configurator"/>
+      <plugin id="org.eclipse.update.core"/>
+      <plugin id="org.eclipse.update.core.win32"/>
+      <plugin id="org.eclipse.update.ui"/>
+      <plugin id="org.fast.fastsdk"/>
+      <plugin id="org.fast.fastsdk.lib"/>
+   </plugins>
+
+</product>

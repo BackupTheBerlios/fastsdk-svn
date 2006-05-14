@@ -1,0 +1,32 @@
+body {
+	margin: 2px;
+	font-family: arial;
+	font-size: 12pt;;
+	font-family: arial;
+	line-height: 16pt;
+}
+
+div.title {
+	font-family: arial;
+	font-weight: bold; font-size : 18pt;
+	margin-bottom: 10px;;
+	font-size: 18pt;
+}
+
+div.code {
+	font-family: "courier new";
+	font-size: 10pt;
+	background-color: #c0c0c0;
+	border: 1px solid black;
+	padding: 5px;
+}
+
+div.subtitle {
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+div span.name {
+	font-size: 12pt;
+	font-style: italic;
+}

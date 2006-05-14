@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension
+         id="fastsdk"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="org.fast.fastsdk.core.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Fastsdk Perspective"
+            class="org.fast.fastsdk.core.Perspective"
+            id="org.fast.fastsdk.perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.fast.fastsdk.core.editors.FastMultiPageEditor"
+            contributorClass="org.fast.fastsdk.ui.actions.FastMultiPageActionBarContributor"
+            default="false"
+            extensions="fst"
+            icon="icons/editor.gif"
+            id="org.fast.fastsdk.editors.fastMultiPage"
+            name="Fast Diagram Editor"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            class="org.eclipse.ui.views.properties.PropertySheet"
+            icon="icons/prop_ps.gif"
+            id="org.eclipse.ui.views.PropertySheet"
+            name="Properties"/>
+      <view
+            allowMultiple="false"
+            class="org.eclipse.ui.views.contentoutline.ContentOutline"
+            icon="icons/outline_co.gif"
+            id="org.eclipse.ui.views.contentoutline.ContentOutline"
+            name="Outline"/>
+      <view
+            allowMultiple="false"
+            class="org.fast.fastsdk.ui.views.FastFilesView"
+            icon="icons/filenav_nav.gif"
+            id="org.fast.fastsdk.views.files"
+            name="Files"/>
+      <view
+            allowMultiple="false"
+            class="org.fast.fastsdk.ui.views.FastLogView"
+            icon="icons/changelog-obj.gif"
+            id="org.fast.fastsdk.views.log"
+            name="Logs"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+         <category
+            description="Fast Commands"
+            id="org.fast.fastsdk.commands"
+            name="FAST"/>
+      <command
+            categoryId="org.fastsdk.commands"
+            description="Create a new FAST Diagram"
+            id="org.fast.fastsdk.actions.newAction"
+            name="New Fast Diagram"/>
+      <command
+            categoryId="org.fastsdk.commands"
+            id="org.fast.fastsdk.actions.openAction"
+            name="Open Fast Diagram"/>
+      <keyBinding
+            commandId="org.fast.fastsdk.actions.newAction"
+            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            keySequence="M1+M2+N"/>
+      <keyBinding
+            commandId="org.eclipse.ui.file.exit"
+            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            keySequence="M1+Q"/>
+      <keyBinding
+            commandId="org.fast.fastsdk.actions.openAction"
+            keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            keySequence="M1+M2+O"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.fast.fastsdk.ui.preferences.FastPreferencePage"
+            id="org.fastsdk.preferences.FastPreferencePage"
+            name="FAST SDK"/>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.fast.fastsdk.ui.preferences.PreferenceInitializer"/>
+   </extension>
+   <extension
+         id="fast_sdk"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.fast.fastsdk.fastsdk"
+            name="FAST SDK">
+         <property
+               name="windowImages"
+               value="icons/logo.gif,icons/logo32.gif"/>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="toc.xml"
+            primary="true"/>
+      <toc file="tocgettingstarted.xml"/>
+      <toc file="tocreference.xml"/>
+      <toc file="tocsamples.xml"/>
+   </extension>
+
+</plugin>
