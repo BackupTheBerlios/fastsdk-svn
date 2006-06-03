@@ -11,5 +11,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.gef,
  org.eclipse.ui.ide,
  org.eclipse.core.resources,
- org.fast.fastsdk.lib
+ org.fast.fastsdk.lib,
+ org.aspectj.runtime
 Eclipse-AutoStart: true
