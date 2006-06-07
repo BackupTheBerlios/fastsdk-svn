@@ -1,12 +1,15 @@
-\documentclass{book}
-
+\documentclass{article}
 
 \usepackage[headings]{fullpage}
-\usepackage{CJK}
+\usepackage{verbatim}
 \usepackage{amssymb,amsmath}
+\usepackage{CJK}
+\usepackage[bookmarks=false, dvipdfm, pdfstartview=FitH, colorlinks=true,
+bookmarksnumbered=true, linkcolor=black]{hyperref}
+\textheight 9.0in
 
 \begin{document}
-\begin{CJK}{GBK}{kai}
+\begin{CJK}{GBK}{song}
 
 \title{算法设计与分析复习参考}
 \author{沈容舟 anticlockwise5@gmail.com}
@@ -14,15 +17,10 @@
 
 \maketitle
 
-\frontmatter
-\chapter{前言}
-该文档仅供算法设计与分析考试参考，若有任何错误，请与本人联系，谢谢。
-
 \tableofcontents
 
-\mainmatter
+\newpage
 
-\chapter{基本概念}
 \section{O, $\Omega$, $\Theta$ 的具体定义}
 以下设f(N)和g(N)是定义在正数集上的正函数。
 
@@ -116,9 +114,6 @@ $\delta (q;x_{1}, x_{2}, \hdots, x_{k})$中随意选定一个值作为他的函数值。
 \subsection{P类和NP类语言的定义}
 $P = \lbrace \text{L${|}$L是一个能在多项式时间内被一台DTM所接受的语言}\rbrace$ \\
 $NP = \lbrace \text{L${|}$L是一个能在多项式时间内被一台NDTM所接受的语言}\rbrace$
-
-
-\chapter{算法}
 
 \section{旅行售货员问题}
 \subsection{算法描述}
@@ -263,7 +258,7 @@ void knapsack(v[], w[], c, n, x[]) {
 
 \subsubsection{构造最优解}
 \begin{verbatim}
-void traceback(m[][], w[], c, n, x[]) {
+public static void traceback(m[][], w[], c, n, x[]) {
     j = c;
     for(int i = n; i < 0; i--) {
         if(m[i][j] > m[i-1][j]) {
@@ -281,8 +276,133 @@ void traceback(m[][], w[], c, n, x[]) {
 算法需要$\Omega (n^{2})$计算时间。
 
 \section{n后问题}
-在$n\times n$
+在$n\times n$的棋盘上放置彼此不受攻击的n个皇后。
+按照国际象棋的规则，皇后可以攻击与之处在同一行或同一列或同一斜线上的棋子。
+n后问题等价于在$n\times n$格的棋盘上放置n个皇后，
+任何2个皇后不放在同一行或同一列或同一斜线上。
+
+\subsection{算法描述}
+\subsubsection{解向量}
+$(x_{1}, x_{2}, \hdots, x_{n})$
+\subsubsection{显约束}
+$x_{i}$序号表示所在行，其值表示所在列。
+\subsubsection{隐约束}
+\begin{enumerate}
+\item 不同列：$x_{i}\neq x_{j}$
+\item 不处于同一正、反对角线：$|i-j| \neq |x_{i}-x_{j}|$
+\end{enumerate}
+
+\begin{verbatim}
+public static boolean place(int k) {
+    for(int j = 1; j < k; j++)
+        if((abs(k-j) == abs(x[j]-x[k])) || (x[j] == x[k]))
+            return false;
+    return true;
+}
+
+public static void backtrack(int t) {
+    if(t > n)
+        sum++;
+    else {
+        for(int i = 1; i <=n; i++) {
+            x[t] = i;
+            if(place(t))
+                backtrack(t+1);
+        }
+    }
+}
+\end{verbatim}
+
+\section{图的m着色问题}
+给定无向连通图G和m种不同的颜色。用这些颜色为图G的个顶点着色，
+每个顶点着一种颜色。是否有一种着色法使G中每条边的2个顶点着不同的颜色。
+这个问题是图的m可着色判定问题。
+若一个图最少需要m种颜色才能使土中每条边连接的2个顶点着不同颜色，
+则称这个数m为该图的色数。
+求一个图的色数m的问题称为图的m可着色优化问题。
+
+\subsection{算法描述}
+\subsubsection{解空间}
+$(x_{1}, x_{2}, \hdots, x_{n})$表示顶点i所着颜色$x[i]$。
+\subsubsection{可行性约束函数}
+顶点i与已着色的相邻顶点颜色不重复。\\
+邻接矩阵 G = (V,E) \\
+$a[i,j]$ \begin{cases}
+       0 & \\
+       1 & \text{存在边}
+       \end{cases} \\
+$x[i]$ = 表示着色 \\
+n = 3, m = 3解空间树 \\
+n + 1层为叶结点
+
+\begin{verbatim}
+public static void backtrack(int t) {
+    if(t > n) {
+        sum++;
+    } else {
+        for(int i = 1; i <= m; i++) {
+            x[t] = i;
+            if(ok(t))
+                backtrack(t+1);
+        }
+    }
+}
+
+public static boolean ok(int k) {
+    for(int j = 1; j <= n; j++) {
+        if(a[k][j] && (x[j] == x[k]))
+            return false;
+    }
+}
+\end{verbatim}
+
+\subsection{算法复杂度}
+图m可着色问题的解空间树中内结点个数是：$\displaystyle{\sum_{i=0}^{n-1}{m^{i}}}$对于每一个内结点，
+在最坏情况下，用ok检查当前扩展结点的每一个儿子所相应的颜色可用性需耗时$O(mn)$。
+因此，回溯法总的时间耗费是：
+\begin{equation*}
+\sum_{i=0}^{n-1}{(mn)} = \frac{nm(m^{n}-1)}{m-1} = O(nm^{n})
+\end{equation*}
+
+\section{最后一道设计题}
+\subsection{思路}
+将N个数组分为大致相同的两半，看x是不是在$a[N/2]$这个数组的范围内。
+
+若在，则在$a[N/2]$这个数组通过常数次比较得出结果(有返回N/2，无返回-1)
+
+若不在，考虑两种情况：
+\begin{cases}
+\text{$x > a[N/2]$中最大的数，则在$\frac{N}{2}+1 - N-1$的数组中继续查找} \\
+\text{$x < a[N/2]$中的最小数，则在$0 - \frac{N}{2}-1$的数组中继续查找}
+\end{cases}
+
+\begin{verbatim}
+public static int search(int a[], int n, int x) {
+    for(int i = 0; i < n; i++) {
+        if(a[i] == x)
+            return i;
+    return -1;
+}
+
+public static int divideSearch(int a[][5], int n, int x) {
+    int left = 0;
+    int right = n-1;
+    while(left <= right) {
+        int middle = (left + right) / 2;
+        if((x >= a[middle][0] && x <= a[middle][4]) ||
+            (x <= a[middle][0] && x >= a[middle][4]))
+            return (search(a[middle], 5, x) == -1) ? -1 : middle;
+        else if(x > a[middle][0] && x > a[middle][4])
+            left = middle + 1;
+        else
+            right = middle - 1;
+    }
+    return -1;
+}
+\end{verbatim}
+
+\subsection{算法复杂度分析}
+该算法的复杂度主要在于二分查找数组，所以其时间复杂度为：$T(n) = \log_{2}{(N)}$。
 
 \end{CJK}
-
 \end{document}
