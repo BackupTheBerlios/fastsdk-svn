@@ -23,19 +23,6 @@
 \mainmatter
 
 \chapter{基本概念}
-\section{算法的特性}
-算法的特性如下：
-\begin{enumerate}
-\item 输入：有零个或多个外部量作为算法的输入
-\item 输出：算法产生至少一个量作为输出
-\item 确定性：组成算法的每条指令是清晰的,无歧异的
-\item 有限性：算法中每条指令的执行次数有限,执行每条指令的时间也有限
-\end{enumerate}
-
-\section{算法复杂度}
-算法的复杂度是算法运行所需要的计算机资源的量，需要时间资源的量称为\textbf{时间复杂度}，
-需要的空间资源的量称为\textbf{空间复杂度}。
-
 \section{O, $\Omega$, $\Theta$ 的具体定义}
 以下设f(N)和g(N)是定义在正数集上的正函数。
 
@@ -48,7 +35,9 @@
 
 \section{最坏情况下复杂度和平均情况下复杂度}
 \begin{enumerate}
-  \item 最坏情况下的时间复杂度：$T\max{(n)} = \max{\lbrace T(N,I)|size(I)=n \rbrace}
+  \item 最坏情况下的时间复杂度：$T\max{(n)} = \max{\lbrace T(N,I)|size(I)=n \rbrace}$
+  \item 最好情况下的时间复杂度：$T\min{(n)} = \min{\lbrace T(N,I)|size(I)=n \rbrace}$
+  \item 平均情况下的时间复杂度：$\displaystyle{Tavg(n) = \sum_{size(I)=n}{p(I)T(I)}}$
 \end{enumerate}
 
 \section{递归}
@@ -62,326 +51,109 @@
   \item 递归定义：使问题向边界条件转化的规则。
 \end{enumerate}
 
-\chapter{算法}
-\section{递归算法}
-\subsection{多项式求值递归算法及时间复杂度}
-\begin{equation}
-f(x) = a_{n}x^{n} + a_{n-1}x^{n-1} \hdots + a_{2}x^{2} +
-a_{1}x^1 + a_{0}
-\end{equation}
-\subsubsection{算法描述}
-\begin{verbatim}
-public static int polynomial(int x, int n, int[] a) {
-    int length = a.length;
-    if(n == 0)
-        return a[length - n - 1];
-    else
-        return x * f(n - 1) + a[length - n - 1];
-}
-\end{verbatim}
-\subsubsection{算法复杂度}
-
-\subsection{Hanoi塔算法步骤及时间复杂度}
-设a,b,c是3个塔座。开始时，在塔座a上有一叠共n个圆盘，这些原盘子下而上，由大到小的叠在一起。
-个圆盘从小到大编号为1，2，$\hdots$，n，现要求将塔座a上的这一叠圆盘移到塔座b上，并仍按同样顺序叠
-置。
-
-在移动圆盘时应 遵守以下移动规则：
+\section{背包问题与0-1背包问题的区别}
 \begin{itemize}
-  \item 规则（1）：每次只能移动1个圆盘；
-  \item 规则（2）：任何时候都不允许将较大的圆盘压在较小的圆盘之上；
-  \item 规则（3）：在满足移动规则（1）和规则（2）的前提下，可将圆盘移至a,b,c中任一塔座上。
+  \item 共同点：给定n种物品和一个背包。物品i的重量是$W_{i}$，其价值为$V_{i}$，背包的容量为C。
+应如何选择装入背包的物品，使得装入背包种物品的总价值最大。
+  \item 不同点：\begin{enumerate}
+              \item 对于0-1背包问题，在选择装入背包的物品时，对每种物品i只有2种选择，
+              即装入背包或不装入背包。不能将物品i装入背包多次，也不能只装入部分的物品i。
+              \item 对于背包问题，物品装入时，可以装入部分物品。
+            \end{enumerate}
 \end{itemize}
 
-\subsubsection{算法描述}
-这个问题有一个简单的解法。假设塔座a,b,c排成一个三角形，
-a$\rightarrow$b$\rightarrow$c$\rightarrow$a构成一顺时针循环。
-在移动圆盘的过程中，若是奇数次移动，则保持最小的圆盘不动。
-而在其它两个塔座之间，将较小的圆盘移到另一塔座上去。
+\section{分治法与动态规划之间的异同}
+\begin{itemize}
+  \item 相同点：基本思想相同，即都是将待求解问题分解成若干个子问题，先求解自问题，然后从这些
+  子问题的解得到原问题的解。
+  \item 不同点：适合于用动态规划求解的问题，经分解得到的子问题往往不是互相对立的。
+\end{itemize}
 
-上述算法简洁明确，可以证明它是正确的。但只看看法的计算步骤，
-很难理解他的道理，也很难理解他的设计思想。下面用递归技术来解决统一问题。
-当n=1时，问题比较简单，只要将编号为1的圆盘从塔座a直接移至塔座b上即可。
-当n$>$1时，需要利用塔座c作为辅助塔座。
-此时如能设法将n-1个较小的圆盘依照移动规则从塔座a移至塔座c，然后，
-将剩下的最大圆盘从塔座a移至塔座b，最后，
-在设法将n-1个较小的圆盘依照移动规则从塔座c移至塔座b。由此可见，
-n个圆盘的移动问题可分为两次n-1个圆盘的移动问题，
-这又可以递归的用上述方法来做。
-由此可以 设计出解Hanoi塔问题的地柜算法如下：
+\section{回溯分治法与分支限界法的异同}
+\begin{itemize}
+  \item 相同点：都是在问题的解空间上搜索问题解得算法
+  \item 不同点：\begin{enumerate}
+              \item 求解目标区别：回溯法的求解目标是找出解空间树种满足约束条件的\textbf{所有解}，
+              而分支限界法的求解目标则是找出满足约束条件的\textbf{一个解}，或是在满足约束条件的
+              解中找出在某种意义下的\textbf{最优解}。
+              \item 搜索方式不同：回溯法以深度优先的方式搜索解空间树，而分支限界法则以广度
+              优先或以最小耗费优先的方式搜索解空间树。
+            \end{enumerate}
+\end{itemize}
 
-\begin{verbatim}
-public static void hanoi(int n, int a, int b, int c) {
-    if(n > 0) {
-        hanoi(n - 1, a, c, b);
-        move(a, b);
-        hanoi(n - 1, c, b, a);
-    }
-}
-\end{verbatim}
+\section{动态规划问题的特征}
+\begin{itemize}
+  \item 最优子结构性质：问题的最优解包含了其子问题的最优解。
+  \item 子问题重叠性质：在求解问题时，每次产生的子问题并不一定完全是新的或者独立的问题，
+  而有一些子问题是重复计算的。
+\end{itemize}
 
-其中，hanoi(n, a, b, c)表示将塔座a上自下而上，由大到小叠在一起的n
-个圆盘依照移动规则移至塔座b上并仍按同样顺序叠放。
+\section{回溯法中的剪枝函数}
+\begin{itemize}
+  \item 约束函数：用来在扩展结点处剪去不满足约束的子树；
+  \item 限界函数：用来剪去得不到最优解的子树。
+\end{itemize}
 
-\subsubsection{时间复杂度}
+\section{非确定性图灵机与确定性图灵机的主要区别}
+\begin{itemize}
+  \item 确定性图灵机：在图灵机计算模型中，移动函数$\delta$是单值的，即对于$Q\times Tk$中的每一个值，
+当它属于$\delta$的定义域时，$Q\times(T\times\lbrace L, R, S\rbrace)k$中只有唯一的值与之对应，
+称这种图灵机为确定性图灵机，简记为DTM(Deterministic Turing Machine)。
+  \item 非确定性图灵机：一个k带的非确定性图灵机M是一个7元组：(Q, T, I, $\delta$, b, $q_{0}$, $q_{f}$)。
+与确定性图灵机不同的是非确定性图灵机允许移动函数$\delta$具有不确定性，即对于$Q\times Tk$中的每一个
+值$(q;x_{1}, x_{2}, \hdots, x_{k})$，当它属于$\delta$的定义域时，$Q\times(T\times\lbrace L,
+R, S\rbrace)k$中有唯一的一个子集$\delta (q;x_{1}, x_{2}, \hdots, x_{k})$与之对应。可以在
+$\delta (q;x_{1}, x_{2}, \hdots, x_{k})$中随意选定一个值作为他的函数值。
+\end{itemize}
 
-\section{分治法}
-\subsection{基本思想}
-分治法的基本思想是将一个规模为n的问题分解为k个规模较小的子问题，
-这些子问题互相独立且与原问题相同。递归的解这些子问题，
-然后将各自问题的解合并得到原问题的解。
+\section{P类与NP类语言}
+问题P是多项式（时间）界的，是指问题P有一个多项式（时间）界的算法。
+问题P一般称为P类问题，或易解问题。
 
-\subsection{棋盘覆盖算法步骤及时间复杂度}
-在一个2$^{k}\times$2$^{k}$个方格组成的棋盘中，
-恰有一个方格与其他方格不同，称该方格为一特殊方格，
-切成该棋盘为一个特殊棋盘。显然特殊方格在棋盘上出现的位置有4$^{k}$种情形。
-因而对任何k$\ge$0，有4$^{k}$种不同的特殊棋盘。
+一般的说，将可由多项式时间算法求解的问题看作是\textbf{易处理的问题}，
+而将需要超多项式时间才能求解的问题看作是\textbf{难处理的问题}。
 
-\subsubsection{算法步骤}
-当k$>$0时，将2$^{k}\times$2$^{k}$棋盘分割为4个2$^{k-1}\times$2$^{k-1}$子棋盘。
+\subsection{P类和NP类语言的定义}
+$P = \lbrace \text{L${|}$L是一个能在多项式时间内被一台DTM所接受的语言}\rbrace$ \\
+$NP = \lbrace \text{L${|}$L是一个能在多项式时间内被一台NDTM所接受的语言}\rbrace$
 
-特殊方格必位于4个较小子棋盘指一种，其余3个子棋盘中无特殊方格。
-为了将这3个特殊方格的子棋盘转化为特殊棋盘，
-可以用一个L型骨牌覆盖这3个较小棋盘的会合处，这3个子棋盘上被L型骨牌覆盖的
-方格就成为该棋盘上的特殊方格，从而将圆问题转化为4个较小规模的覆盖问题。
-递归的使用这种分割，直至棋盘简化为1$\times$1棋盘。
-\begin{verbatim}
-public void chessBoard(int tr, int tc, int dr, int dc, int size) {
-    if(size == 1)
-        return;
-    int t = tile ++, // L型骨牌号
-        s = size / 2; // 分割棋盘
 
-    if(dr < tr + s && dc < tc + s)
-        chessBoard(tr, tc, dr, dc, s);
-    else {
-        board[tr + s - 1][tc + s - 1] = t;
-        chessBoard(tr, tc, tr + s - 1, tc + s - 1, s);
-    }
+\chapter{算法}
 
-    if(dr < tr + s && dc >= tc + s)
-        chessBoard(tr, tc, + s, dr, dc, s);
-    else {
-        board[tr + s - 1][tc + s] = t;
-        chessBoard(tr, tc + s, tr + s - 1, tc + s, s);
-    }
+\section{旅行售货员问题}
+\subsection{算法描述}
+算法中while循环的终止条件是排列树的一个叶结点成为当前扩展结点。
+当s=n-1时，以找到的回路前缀是$x[0:n-1]$，它已包含图G的所有n个顶点。
+因此，当s=n-1时，相应的扩展结点表示一个叶结点。
+此时该叶结点所相应的回路的费用等于cc和lcost的值。
+剩余的活结点的lcost值不小于以找到的回路的费用。
+它们都不可能导致费用更小的回路。
+因此已找到的叶结点所相应的回路是一个最小费用旅行售货员回路，算法可以结束。
 
-    if(dr >= tr + s && dc < tc + s)
-        chessBoard(tr + s, tc, dr, dc, s);
-    else {
-        board[tr + s][tc + s - 1] = t;
-        chessBoard(tr + s, tc, tr + s, tc + s - 1, s);
-    }
+算法结束时返回找到的最小费用，相应的最优解有数组v给出。
 
-    if(dr >= tr + s && dc >= tc + s)
-        chessBoard(tr + s, tc + s, dr, dc, s);
-    else {
-        board[tr + s][tc + s] = t;
-        chessBoard(tr + s, tc + s, tr + s, tc + s, s);
-    }
-}
-\end{verbatim}
+\subsubsection{队列式分支限界法}
+$[\underline{A}]B, C, D$ \\
+$[\underline{B}, C, D]E, F$ \\
+$[\underline{C}, D, E, F]G, H$ \\
+$[\underline{D}, E, F, G, H]I, J$ \\
+$[\underline{E}, F, G, H, I, J]K(59)[1, 2, 3, 4]$ \\
+$[\underline{F}, G, H, I, J]L(66)$ \\
+$[\underline{G}, H, I, J]M(25)[1, 3, 2, 4]$ \\
+$[\underline{H}, I, J]1-3-4(26)$ \\
+$[\underline{I}, J]O(25)$ \\
+$[\underline{J}]P(59)$
 
-上述算法中，用整形数组board表示棋盘。board[0][0]
-是棋盘的左上角方格。tile是算法中的一个全局整形变量，
-用来表示L型骨牌的编号，其初始值为0。算法的输入参数是：
-\begin{description}
-\item[$\hspace{20pt}$ tr: 棋盘左上角方格的行号；]
-\item[$\hspace{20pt}$ tc: 棋盘左上角方格的列号；]
-\item[$\hspace{20pt}$ dr: 特殊方格所在的行号；]
-\item[$\hspace{20pt}$ dc: 特殊方格所在的行号；]
-\item[$\hspace{20pt}$ size: 2$^{k}$，棋盘规格为2$^{k}\times$2$^{k}$。]
-\end{description}
+\subsubsection{优先队列式分支限界法}
+$[\underline{A}]B, C, D \rightarrow B(30), C(6), (4)$ \\
+$[\underline{D}, C, B]I, J \rightarrow I(14), J(24)$ \\
+$[\underline{C}, I, J, B]G, H \rightarrow G(11), H(26)$ \\
+$[\underline{G}, I, J, B, H]M \rightarrow M(25)[1, 2, 3, 4]$ \\
+$[\underline{I}, J, B, H]O \rightarrow O(25)$ \\
+$[\underline{J}, B, H]P \rightarrow P(59)$ \\
+$[\underline{B}, H]B, H\text{限界掉}$
 
-\subsubsection{时间复杂度}
-设T(k)是算法chessBoard覆盖一个2$^{k}$$\times$2$^{k}$棋盘所需的时间。从算法的 分割策略可知，T(k)满足如下递归方程：
-
-\begin{equation*}
-T(k) = 
-\begin{cases}
-O(1) & \text{k = 0}\\
-4T(k - 1) + O(1) & \text{k $>$ 0}
-\end{cases}
-\end{equation*}
-
-该算法的时间复杂度为：T(k) = O(4$^{k}$)。
-
-\subsection{合并排序算法及其时间复杂度}
-\subsubsection{算法描述}
-合并排序算法使用分治策略实现对n个元素进行排序的算法。其基本思想是：
-将待排序元素分成大小大相同的2个子集合，分别对2个子集合进行排序，
-最终将排好序的子集合合并成为所要求的排好序的集合。 
-合并排序算法可递归的描述如下：
-
-\begin{verbatim}
-public static void mergeSort(Comparable a[], int left, int right) {
-    if(left < right) {
-        int i = (left + right) / 2;
-        mergeSort(a, left, i);
-        mergeSort(a, i + 2, right);
-        merge(a, b, left, i, right);
-        copy(a, b, left, right);
-    }
-}
-\end{verbatim}
-
-\subsubsection{时间复杂度}
-合并排序算法对n各元素进行排序，在最坏情况下所需的时间T(n)满足：
-\begin{equation*}
-T(n) = 
-\begin{cases}
-O(1) & \text{n $\le$ 1} \\
-2T(n/2) + O(n) & \text{n $>$ 1}
-\end{cases}
-\end{equation*}
-
-解此方程可知：T(n) = O(n$\log{n}$)。由于排序问题的计算时间下界为$\Omega$(n$\log{n}$)，
-故合并排序算法是渐进最优算法。
-
-\section{动态规划}
-\subsection{基本步骤}
-动态规划算法适用于解最优化问题。通常可以按以下步骤 设计动态规划算法：
-\begin{enumerate}
-  \item 找出最优解的性质，并刻画其结构特征；
-  \item 递归的定义最优值；
-  \item 以自底向上的方式计算出最优值；
-  \item 根据计算最优值时得到的信息，构造最优解。
-\end{enumerate}
-
-\subsection{货郎担问题}
-
-\subsection{流水作业问题}
-n个作业 $\lbrace$1, 2, $\hdots$, n$\rbrace$要在两台机器$M_{1}$和$M_{2}$组成的流水线上完成加工。
-每个作业加工的顺序都是先在$M_{1}$上加工，然后在$M_{2}$上加工。
-$M_{1}$和$M_{2}$加工作业i所需的时间分别为$a_{i}$和$b_{i}$。
-流水作业调度问题要求确定这n个作业的最优加工顺序使得从第一个作业在机器$M_{1}$上开始加工，
-到最后一个作业在机器$M_{2}$上加工完成所需的时间最少。
-
-\subsubsection{最优子结构}
-流水作业调度问题具有最有字结构性质。
-
-设$\pi$是所给n个流水作业的一个最优调度， 他所需的加工时间为$a_{\pi(1)} + T^{'}$。
-其中$T^{'}$是在机器M$_{2}$的等待时间为$b_{\pi(1)}$时，安排作业$\pi(2)$，$\hdots$，
-$\pi(n)$所需要的时间。
-
-记$S = N - \lbrace\pi(1)\rbrace$, 则有$T^{'} = T(S, b_{\pi(1)})$。
-
-事实上，由T的定义知$T^{'} \ge T(S, b_{\pi(1)})$。若$T^{'}>T(S, b_{\pi(1)}$)，
-设$\pi^{'}$是作业集S在机器M$_{2}$的等待时间为b$_{\pi(1)}$的情况下的一个最优调度。
-则$\pi(1)，\pi^{'}(2)，\hdots，\pi^{n}$是N的一个调度，
-且该调度所需的时间为$a_{\pi(1)} + T(S, b_{\pi(1)}) < a_{\pi(1)} + T^{'}$。
-这与$\pi$是N的最优调度矛盾。故$T^{'} \le T(S, b_{\pi(1)})$。从而
-$T^{'} = T(S, b_{\pi(1)})$。这就证明了流水作业调度问题具有最优子结构的性质。
-
-\subsubsection{递归计算最优值}
-由流水作业调度问题的最优子结构性质可知，
-\begin{equation*}
-T(N, 0) = \min_{1 \le i \le n}{\lbrace a_{i} + T(N - \lbrace i \rbrace, b_{i})\rbrace}
-\end{equation*}
-
-推到一般情形下便有
-\begin{equation*}
-T(S, t) = \min_{i \in S}{\lbrace a_{i} + T(S - \lbrace i \rbrace, b_{i} +
-\max{\lbrace t - a_{i}, 0}\rbrace )\rbrace}
-\end{equation*}
-其中，$\max{\lbrace t - a_{i}, 0\rbrace}$这一项是由于在机器$M_{2}$上，
-作业i须在$\max{\lbrace t, a_{i}\rbrace}$时间之后才能开工。因此，在机器
-$M_{i}$上完成作业i之后，机器上还需
-\begin{equation*}
-b_{i} + \max{\lbrace t, a_{i}\rbrace} - a_{i} = b_{i} + \max{\lbrace t - a_{i},
-0 \rbrace}
-\end{equation*}
-时间才能完成对作业i的加工。
-
-\subsubsection{流水作业调度的Johnson法则}
-设$\pi$是作业集S在机器$M_{2}$的等待时间为t时的任意最优调度。若在这个调度中，
-安排在最前面的两个作业分别是i和j，即$\pi(1) = i, \pi(2) = j$。
-则由动态规划递归式可得
-\begin{equation*}
-T(S, t) = a_{i} + T(S - \lbrace i \rbrace, b_{i} + \max{\lbrace t - a_{i},
-0\rbrace}) = a_{i} + a_{j} + T(S - \lbrace i, j \rbrace, t_{ij})
-\end{equation*}
-其中
-\begin{align*}
-t_{ij} &= b_{j} + \max{\lbrace b_{i} + \max{\lbrace t - a_{i}, 0\rbrace} -
-a_{j},0\rbrace} \\
-&= b_{j} + b_{i} - a_{j} + \max{\lbrace \max{\lbrace t - a_{i} , 0\rbrace}, a_{j}
-- b_{i}\rbrace} \\
-&= b_{j} + b_{i} - a_{j} + \max{\lbrace t - a_{i} , a_{j}- b_{i}, 0\rbrace} \\
-&= b_{j} + b_{i} - a_{j} - a_{i} + \max{\lbrace t, a_{i} + a_{j}- b_{i}, 
-a_{i}\rbrace}
-\end{align*}
-
-如果作业i和j满足$\min{\lbrace b_{i}, a_{i}\rbrace} \ge \min{\lbrace b_{j}, a_{i}
-\rbrace}$， 则称作业i和j满足Johnson不等式。
-
-如果作业i和j不满足Johnson不等式，则交换作业i和作业j的加工顺序后，作业i和j满足Johnson不等式。
-
-在作业集S当机器$M_{2}$的等待时间为t时的调度$\pi$中，交换作业i和作业j的加工顺序，
-得到作业集S的另一调度$\pi^{'}$，它所需的加工时间为
-\begin{equation*}
-T^{'}(S, t) = a_{i} + a_{j} + T(S - \lbrace i, j \rbrace, t_{ji})
-\end{equation*}
-其中
-\begin{equation*}
-t_{ji} = b_{j} + b_{i} - a_{j} - a_{i} + \max{\lbrace t, a_{i} + a_{j} - b_{j},
-a_{j}\rbrace}
-\end{equation*}
-
-当作业i和j满足Johnson不等式$\min{\lbrace b_{i}, a_{i}\rbrace} \ge \min{\lbrace b_{j}, a_{i}
-\rbrace}$时，有
-\begin{equation*}
-\max{\lbrace -b_{i}, -a_{j}} \le \max{\lbrace -b_{j}, -a_{i}\rbrace}
-\end{equation*}
-从而
-\begin{equation*}
-a_{i} + a_{j} + \max{\lbrace -b_{i}, -a_{j}\rbrace} \le a_{i} + a_{j} +
-\max{\lbrace -b_{j}, -a_{i}\rbrace}
-\end{equation*}
-由此可得
-\begin{equation*}
-\max{\lbrace a_{i} + a_{j} - b_{i}, a_{i}\rbrace} \le \max{\lbrace a_{i} + a_{j}
-- b_{j}, a_{j}\rbrace}
-\end{equation*}
-因此对任意t有
-\begin{equation*}
-\max{\lbrace t, a_{i} + a_{j} - b_{i}, a_{i}\rbrace} \le \max{\lbrace t, a_{i} +
-a_{j} - b_{j}, a_{j}\rbrace}
-\end{equation*}
-从而，$t_{ij}\le t_{ji}$。由此可见$T(S, t) \le T^{'}(S, t)$。
-
-换句话说，当作业i和作业j不满足Johnson不等式时，交换他们的加工顺序后，
-作业i和j满足Johnson不等式，且不增加加工时间。由此可知，对于流水作业调度问题，
-必存在最优调度$\pi$，使得作业$\pi(i)$和$\pi(i+1)$满足Johnson不等式
-\begin{equation*}
-\min{\lbrace b_{\pi(i)}, a_{\pi(i+1)}\rbrace} \ge min{\lbrace b_{\pi(i+1)},
-a_{\pi(i)}\rbrace}, \;\;\; 1 \le i \le n -1
-\end{equation*}
-这样的调度$\pi$称为满足Johnson法则的调度。
-
-进一步还可以证明，调度$\pi$满足Johnson法则当且仅当对任意i$<$j有
-\begin{equation}
-\min{\lbrace b_{\pi(i)}, a_{\pi(j)}\rbrace} \ge min{\lbrace b_{\pi(j)},
-a_{\pi(i)}\rbrace}
-\end{equation}
-
-由此可知，任意两个满足Johnson法则的调度具有相同的加工时间。
-从而所有满足Johnson法则的调度均为最优调度。至此，
-将流水作业调度问题转化为求满足Johnson法则的调度问题。
-
-\subsubsection{算法描述}
-流水作业调度问题的Johnson算法：
-\begin{description}
-\item[(1) 令$N_{1} = \lbrace i|a_{i}<b_{i}\rbrace, N_{2} = \lbrace i|a_{i} \ge
-b_{i} \rbrace$；]
-\item[(2) 将$N_{1}$中作业依$a_{i}$的非减序排序；将$N_{2}$中作业依$b_{i}$的非增序排序；]
-\item[(3) $N_{1}$中作业接$N_{2}$中作业构成满足Johnson法则的最优调度。]
-\end{description}
-
-\subsubsection{时间复杂度分析}
-算法的主要计算时间花在对作业集的排序。因此，在最坏情况下算法所需的计算时间为$O(n\log{n})$。
-
-\subsection{0-1 背包问题}
+\section{0-1 背包问题}
 0-1背包问题：给定n种物品和一个背包。物品i的重量是$w_{i}$，
 其价值为$v_{i}$，背包的容量为C。问：应该如何选择装入背包的物品，
 使得装入背包种物品的总价值最大？
@@ -389,7 +161,7 @@ b_{i} \rbrace$；]
 在选择装入背包的物品时，对每种物品i只有两种选择，即装入背包或不装入背包。
 不能将物品i装入背包多次，也不能只装入部分的物品i。
 
-\subsubsection{最优子结构性质}
+\subsection{最优子结构性质}
 0-1背包问题具有最优子结构性质。设$(y_{1}, y_{2}, \hdots, y_{n})$是所给0-1背包问题的一个最优解，
 则$(y_{2}, \hdots, y_{n})$是下面相应子问题的一个最优解：
 \begin{align*}
@@ -414,7 +186,7 @@ $\displaystyle{\sum_{i=2}^{n}{v_{i}z_{i}} > \sum_{i=2}^{n}{v_{i}y_{i}}}$，
 从而$(y_{1}, y_{2}, \hdots, y_{n})$不是所给0-1背包问题的最优解。
 此为矛盾。
 
-\subsubsection{递归关系}
+\subsection{递归关系}
 设所给0-1背包问题的子问题
 
 \begin{align*}
@@ -438,61 +210,78 @@ x_{i} \in \lbrace 0, 1\rbrace, i \le k \le n
            \end{cases}
 \end{align*}
 
-\section{贪心算法}
-\subsection{基本思想}
-顾名思义，贪心算法总是做出在当前看来最好的选择，
-也就是说贪心算法并不从整体最优考虑，
-它所做出的选择只是在某种意义上的局部最优选择。
+\subsection{划分阶段}
+\begin{description}
+\item[第一阶段：]只装入1个物体，确定各种不同载重量背包下，能够获得最大值。
+\item[第二阶段：]装入前2个物体，确定各种不同载重量背包下，能够获得最大值。
+\item[依此类推，]知道第n个阶段，最后m(n,c)便是载重量为c的背包下，装入n个物体时能够获得最大值。
+\end{description}
 
-\subsection{贪心算法的基本要素}
-\subsubsection{贪心选择性质}
-所谓贪心选择性质是指所求问题的整体最优解可以通过一系列局部最优的选择，
-及贪心选择来达到。这是贪心算法可行的第一个基本要素，
-也是贪心算法与动态规划算法的主要区别。
+\subsection{确定装入}
+从m(n,c)的值向前倒推：$m(n,c)>m(n-1,c)$表明n物体装入背包，则问题简化为：
+前n-1个物体被装入载重量为c-wn背包中。$m(n,c)\le m(n-1,c)$表明n物体未装入背包，
+则问题简化为：前n-1个物体被装入载重量为c背包中。
 
-证明贪心选择性质：首先考察问题的一个整体最优解，并证明可以修改这个最优解，
-使其以贪心选择开始。做出贪心选择后，原问题简化为规模更小的类似子问题。
-然后，用数学归纳法证明，通过每一步做贪心选择，最终可得到问题的整体最优解。
+依次类推，直道第1个物体是否被装入背包为止。可得递推关系：\\
+若：$m(n,c)=m(n-1,c) & \text{则 $x_{i}=0$}$ \\
+若：$m(n,c)>m(n-1,c) & \text{则 $x_{i}=1, j=j-w_{i}$}$
 
-\subsubsection{最优子结构性质}
-当一个问题的最优解包含其子问题的最优解时，称此问题具有最优子结构性质。
-通常用反证法证明。
+\subsection{例题}
+设0-1背包的一个实例：n = 5, c = 10, w = $\lbrace$2, 2, 6, 5, 4$\rbrace$, v = $\lbrace$
+6, 3, 5, 4, 6$\rbrace$ \\
+有动态函数递推$m[][]$如下：
+\begin{center}
+\begin{tabular}{rlllllllllll}
+i/j \vline &0&1&2&3&4&5&6&7&8&9&10 \\
+\hline
+0 \vline &0&0&0&0&0&0&0&0&0&0&0 \\
+1 \vline &0&0&6&6&6&6&6&6&6&6&6 \\
+2 \vline &0&0&6&6&9&9&9&9&9&9&9 \\
+3 \vline &0&0&6&6&9&9&9&9&11&11&14 \\
+4 \vline &0&0&6&6&9&9&9&10&11&13&14 \\
+5 \vline &0&0&6&6&9&9&12&12&15&15&\underline{15}
+\end{tabular}
+\end{center}
+若$m[i][j]=m[i-1][j] xi = 0$ \\
+若$m[i][j]>m[i-1][j] xi = 1$ \\
+故,最优解为(1, 1, 0, 0, 1)
 
-\subsection{背包问题}
-与0-1背包问题类似，所不同的是在选择物品i装入背包时，可以选择物品i的一部分，
-而不一定要全部装入背包，$1 \le i \le n$。
+\subsection{算法实现}
+\subsubsection{动态规划求最优值}
+\begin{verbatim}
+void knapsack(v[], w[], c, n, x[]) {
+    初始化 m[][], x[];
+    for(int i = 0; i <= n; i++) {
+        for(int j = 1; j <= c; j++) {
+            m[i][j] = m[i-1][j];
+            if(j >= w[i] && (m[i-1][j-w[i]] + v[i] > m[i-1][j])
+                m[i][j] = m[i-1][j-w[i]] + v[i];
+        }
+    }
+}
+\end{verbatim}
 
-此问题的形式化描述是，给定$C>0, w_{i}>0, v_{i}>0, 1 \le i \le n$，
-要求找出一个n元向量$(x_{1}, x_{2}, \hdots, x_{n}), \\ 0 \le x_{i} \le 1,
-1 \le i \le n$，使得$\displaystyle{\sum_{i=1}^{n}{w_{i}x_{i}} \le C}$，
-而且$\displaystyle{\sum_{i=1}^{n}{v_{i}x_{i}}}$，达到最大。
+\subsubsection{构造最优解}
+\begin{verbatim}
+void traceback(m[][], w[], c, n, x[]) {
+    j = c;
+    for(int i = n; i < 0; i--) {
+        if(m[i][j] > m[i-1][j]) {
+            x[i] = 1;
+            j = j - w[i];
+        }
+    }
+}
+\end{verbatim}
 
-\section{回溯法}
-\subsection{基本步骤}
-用回溯法解题通常包含以下3个步骤：
-\begin{enumerate}
-  \item 针对所给问题，定义问题的解空间
-  \item 确定易于搜索的解空间结构
-  \item 以深度优先方式搜索解空间，并在搜索过程中用剪枝函数避免无效搜索。
-\end{enumerate}
+\subsection{算法复杂度分析}
+从m(i,j)的递归式容易看出,算法需要$O(nc)$计算时间.
 
-\subsection{剪枝函数}
-回溯法搜索解空间树时，通常采用两种策略避免无效搜索，提高回溯法的搜索效率。
-其一是用约束函数在扩展结点处剪去不满足约束的子树；
-其二是用限界函数剪去得不到最优解的子树。这两类函数统称为剪枝函数。
+当背包容量c很大时，算法需要的计算时间较多。例如当$c>2n$时，
+算法需要$\Omega (n^{2})$计算时间。
 
-\subsection{子集树与排列树}
-当所给的问题是从n个元素的集合S中找出S满足某种性质的子集时，
-相应的解空间树称为子集树。
-
-当所给问题时确定n个元素满足某种性质的排列时，相应的解空间树称为排列树。
-
-\subsection{旅行售货员问题}
-\subsubsection{解空间}
-旅行售货员问题的解空间是一棵排列树。
-
-\subsubsection{空间组织结构}
-
+\section{n后问题}
+在$n\times n$
 
 \end{CJK}
 
